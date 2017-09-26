@@ -793,8 +793,10 @@ ifconfig(const char * ifname, const char * va, const char *pa) {
 	snprintf(cmd, sizeof(cmd), "ifconfig %s %s %s mtu 1380 netmask 255.255.255.255 up",
 		ifname, va, pa);
 #else
-	snprintf(cmd, sizeof(cmd), "ifconfig %s %s netmask 255.255.255.255 pointopoint %s",
-		ifname, va, pa);
+	//snprintf(cmd, sizeof(cmd), "ifconfig %s %s netmask 255.255.255.255 pointopoint %s",
+	//	ifname, va, pa);
+	snprintf(cmd, sizeof(cmd), "ip addr replace %s peer %s/128 dev %s && ip link set %s up",
+                va, pa,ifname, ifname);
 #endif
 	if (system(cmd) < 0) {
 		perror(cmd);
